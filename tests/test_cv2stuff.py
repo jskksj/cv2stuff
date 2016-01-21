@@ -31,3 +31,6 @@ def test_configuration(setup):
     assert setup.chessboard_points.shape == (setup.ROWS * setup.COLUMNS, 3)
     index = np.mgrid[0:setup.COLUMNS, 0:setup.ROWS].T.reshape(-1, 2)
     assert (setup.chessboard_points[:, :2] == index).all() == True
+
+    assert setup.chessboard3d_points == []
+    assert setup.chessboard2d_points == []
