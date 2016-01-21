@@ -42,9 +42,10 @@ class Configuration(object):
 
 
 pass_configuration = click.make_pass_decorator(Configuration)
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
-@click.group()
+@click.group(context_settings=CONTEXT_SETTINGS)
 @click.pass_context
 def cli(ctx):
     """cv2stuff group function
