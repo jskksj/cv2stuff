@@ -37,5 +37,8 @@ class Configuration(object):
         self.chessboard_points[:, :2] = np.mgrid[0:self.COLUMNS,
                                                  0:self.ROWS].T.reshape(-1, 2)
 
+        self.chessboard3d_points = []
+        self.chessboard2d_points = []
+
 
 pass_configuration = click.make_pass_decorator(Configuration)
