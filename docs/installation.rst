@@ -6,9 +6,10 @@ Installation
 
 At the command line::
 
-    $ easy_install cv2stuff
+    $ pip install cv2stuff
 
 Or, if you have virtualenvwrapper installed::
 
-    $ mkvirtualenv cv2stuff
+    $ pyenv virtualenv 3.5.1 cv2stuff
     $ pip install cv2stuff
+    (cv2stuff) $ pyenv local cv2stuff

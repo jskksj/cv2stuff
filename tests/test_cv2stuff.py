@@ -1,30 +1,22 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-"""
-test_cv2stuff
-----------------------------------
-
-Tests for `cv2stuff` module.
-"""
-
-import unittest
-
-from cv2stuff import cv2stuff
+import pytest
+import cv2
 
 
-class TestCv2stuff(unittest.TestCase):
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def test_000_something(self):
-        pass
+@pytest.fixture
+def setup():
+    import cv2stuff.cv2stuff
+    return(cv2stuff.cv2stuff.Configuration())
 
 
-if __name__ == '__main__':
-    import sys
-    sys.exit(unittest.main())
+def test_configuration(setup):
+
+    assert setup.MAXIMUM_ITERATIONS == 30
+    assert setup.PIXEL_RESOLUTION == 0.001
+    assert setup.criteria == (cv2.TERM_CRITERIA_MAX_ITER +
+                              cv2.TERM_CRITERIA_EPS,
+                              setup.MAXIMUM_ITERATIONS,
+                              setup.PIXEL_RESOLUTION)
+    assert setup.ROWS == 6
+    assert setup.COLUMNS == 7
+    assert setup.chessboard_points.shape == (setup.ROWS * setup.COLUMNS, 3)
