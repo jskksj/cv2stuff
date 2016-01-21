@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Command Line Group for OpenCV Functions"""
 
 import cv2
@@ -7,18 +6,12 @@ import numpy as np
 
 
 class Configuration(object):
-    """Configuration Defaults"""
+    """Set and maintain configuration defaults for the rest of the
+    application.
+    """
 
     def __init__(self):
-        """Set default configuration.
-
-        Termination Criteria:
-            Stop on either maximum iterations or subpixel resolution.
-
-        TERM_CRITERIA_MAX_ITER iteration stop
-        TERM_CRITERIA_EPS      subpixel resolution stop
-
-        Default is to stop on either 30 iterations or 1/1000 pixel resolution.
+        """Initilize the defaults.
         """
 
         self.MAXIMUM_ITERATIONS = 30
@@ -48,9 +41,19 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.pass_context
 def cli(ctx):
-    """cv2stuff group function
+    """
+    By default this program should reconize a chessboard image with seven
+    columns and six rows.  Since that is the number of 'inner' corners the
+    chessboard image actually has 8 columns of square by 7 rows.
 
-    Instantiate the ctx.obj to be a Configuration object.
+    The termination criteria for finding subpixel centers is tostop on either
+    maximum iterations or subpixel resolution.
+
+    TERM_CRITERIA_MAX_ITER: iteration stop
+    TERM_CRITERIA_EPS:      subpixel resolution stop
+
+    The default behavior is to stop on either 30 iterations or
+    1/1000 pixel resolution.
     """
 
     ctx.obj = Configuration()
