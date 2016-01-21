@@ -50,7 +50,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    entry_points={'console_scripts': ['temp=cv2stuff.temp:cli'], },
+    entry_points={'console_scripts': ['cv2stuff=cv2stuff.cv2stuff:cli'], },
     test_suite='tests',
     tests_require=test_requirements
 )
