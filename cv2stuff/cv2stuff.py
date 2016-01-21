@@ -42,3 +42,19 @@ class Configuration(object):
 
 
 pass_configuration = click.make_pass_decorator(Configuration)
+
+
+@click.group()
+@click.pass_context
+def cli(ctx):
+    """cv2stuff group function
+
+    Instantiate the ctx.obj to be a Configuration object.
+    """
+
+    ctx.obj = Configuration()
+
+
+@cli.command()
+def find_show_chessboard_corners():
+    pass

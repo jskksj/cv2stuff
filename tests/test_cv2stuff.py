@@ -34,3 +34,7 @@ def test_configuration(setup):
 
     assert setup.chessboard3d_points == []
     assert setup.chessboard2d_points == []
+
+
+def test_cli():
+    pass
