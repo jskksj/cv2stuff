@@ -3,7 +3,7 @@ tox setup
 
 I need to work on getting a good requirements setup.  I just spend a couple of hours wondering why I kept getting this error:
 
-..
+.. code-block:: guess
 
     ======================================================================
     ERROR: test_calibrate (unittest.loader._FailedTest)
@@ -28,6 +28,6 @@ I need to work on getting a good requirements setup.  I just spend a couple of h
 
 The darn thing would pass pytest, and python setup.py test but not tox.  Finally I get the deps right in tox.ini:
 
-..
+.. code-block:: guess
 
     deps = -r{toxinidir}/requirements_dev.txt

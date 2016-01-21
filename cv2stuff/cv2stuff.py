@@ -30,8 +30,12 @@ class Configuration(object):
 
         self.COLUMNS = 7
         self.ROWS = 6
+        # Size the array to support the number of inner points in the board.
         self.chessboard_points = np.zeros((self.COLUMNS * self.ROWS, 3),
                                           np.float32)
+        # Fill the first two columns with an index.
+        self.chessboard_points[:, :2] = np.mgrid[0:self.COLUMNS,
+                                                 0:self.ROWS].T.reshape(-1, 2)
 
 
 pass_configuration = click.make_pass_decorator(Configuration)

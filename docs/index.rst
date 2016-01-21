@@ -16,6 +16,8 @@ Contents:
    pycharm
    stupidgit
    pytest
+   tox
+   cliff
    todo
    cookiecutter
    authors
