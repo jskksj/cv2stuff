@@ -62,8 +62,9 @@ coverage:
 
 docs:
 	rm -f docs/cv2stuff.rst
+	rm -f docs/tests.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ cv2stuff
+	sphinx-apidoc -o docs/ cv2stuff tests
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html

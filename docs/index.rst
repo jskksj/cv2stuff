@@ -12,7 +12,8 @@ Contents:
    :maxdepth: 2
    :glob:
 
-   modules
+   cv2stuff
+   tests
    notes/*
    todo
    cookiecutter
