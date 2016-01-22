@@ -41,6 +41,11 @@ def test_configuration(setup):
     runner = CliRunner()
     result = runner.invoke(cv2stuff.cli, '-h')
     assert result.exit_code == 0
+    assert 'Usage' in result.output
+
+    result = runner.invoke(cv2stuff.cli, '-help')
+    assert result.exit_code == 0
+    assert 'Usage' in result.output
 
 
 def test_cli():
