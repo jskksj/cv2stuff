@@ -10,15 +10,10 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
+   :glob:
 
    modules
-   pytest_imports
-   pyenv
-   pycharm
-   stupidgit
-   pytest
-   tox
-   cliff
+   notes/*
    todo
    cookiecutter
    authors
