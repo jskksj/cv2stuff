@@ -60,7 +60,8 @@ def test_help_options():
 
 def test_path():
     """
-    For now just echo back a path if it is valid
+    For now just echo back a path if it is valid and an error for a
+    bad path.
     """
     runner = CliRunner()
     result = runner.invoke(cv2stuff.find_chessboard_corners,
