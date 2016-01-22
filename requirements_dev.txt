@@ -7,3 +7,4 @@ coverage
 Sphinx
 pytest
 Click
+sphinxcontrib-programoutput

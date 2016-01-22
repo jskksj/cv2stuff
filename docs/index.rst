@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   modules
    pytest_imports
    pyenv
    pycharm
@@ -24,7 +25,6 @@ Contents:
    contributing
    history
    installation
-   modules
    readme
    usage
 

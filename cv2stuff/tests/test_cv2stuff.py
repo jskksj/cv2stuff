@@ -42,7 +42,7 @@ def test_configuration(setup):
     assert setup.chessboard2d_points == []
 
 
-def test_help_options(setup):
+def test_help_options():
     """
     Both '-h' and '--help' should produce help output.
     """
