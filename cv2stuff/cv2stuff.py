@@ -61,5 +61,5 @@ def cli(ctx):
 
 @cli.command()
 @click.argument('images', nargs=-1, type=click.Path(exists=True),)
-def get_images(images):
+def click_paths(images):
     [click.echo(click.format_filename(image)) for image in images]

@@ -65,8 +65,7 @@ def test_path_one_file():
     runner = CliRunner()
 
     # echo name of one image file
-    result = runner.invoke(cv2stuff.get_images,
-                           ['images/undistort.jpg'])
+    result = runner.invoke(cv2stuff.click_paths, ['images/undistort.jpg'])
     assert 'images/undistort.jpg' in result.output
     assert result.exit_code == 0
 
@@ -78,8 +77,7 @@ def test_path_file_missing():
     runner = CliRunner()
 
     # echo error for missing image file
-    result = runner.invoke(cv2stuff.get_images,
-                           ['doesNotExist'])
+    result = runner.invoke(cv2stuff.click_paths, ['doesNotExist'])
     assert 'Error:' in result.output
     assert result.exit_code == 2
 
@@ -91,8 +89,7 @@ def test_path_empty_command():
     runner = CliRunner()
 
     # echo nothing for nothing on command line
-    result = runner.invoke(cv2stuff.get_images,
-                           [''])
+    result = runner.invoke(cv2stuff.click_paths, [''])
     assert '' in result.output
     assert result.exit_code == 2
 
@@ -104,7 +101,6 @@ def test_path_globbed_files():
     runner = CliRunner()
 
     # echo names of globbed files
-    result = runner.invoke(cv2stuff.get_images,
-                           ['images/my*.jpg'])
+    result = runner.invoke(cv2stuff.click_paths, ['images/my*.jpg'])
     assert 'images/' in result.output
     assert result.exit_code == 2
