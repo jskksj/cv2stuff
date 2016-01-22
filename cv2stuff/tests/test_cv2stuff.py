@@ -35,6 +35,7 @@ def test_configuration(setup):
     assert setup.ROWS == 6
     assert setup.COLUMNS == 7
     assert setup.chessboard_points.shape == (setup.ROWS * setup.COLUMNS, 3)
+
     index = np.mgrid[0:setup.COLUMNS, 0:setup.ROWS].T.reshape(-1, 2)
     assert (setup.chessboard_points[:, :2] == index).all() == True
 
@@ -57,5 +58,12 @@ def test_help_options():
     assert 'Usage' in result.output
 
 
-def test_cli():
-    pass
+def test_path():
+    """
+    For now just echo back a path if it is valid
+    """
+    runner = CliRunner()
+    result = runner.invoke(cv2stuff.find_chessboard_corners,
+                           ['images/undistort.jpg'])
+    assert 'images/undistort.jpg' in result.output
+    # assert result.exit_code == 0
