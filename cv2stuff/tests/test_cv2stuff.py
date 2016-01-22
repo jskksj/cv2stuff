@@ -18,10 +18,13 @@ def setup():
 def test_configuration(setup):
     """Check the Configuration defaults.
 
-    Comparing` <http://stackoverflow.com/questions/10580676/
-    comparing-two-numpy-arrays-for-equality-element-wise>
+    `Comparing <http://stackoverflow.com/questions/10580676/
+    comparing-two-numpy-arrays-for-equality-element-wise>`_
     numpy arrays.  The link says that the test I am using can cause certain
-    kinds of differing arrays to test True when they should not."""
+    kinds of differing arrays to test True when they should not.
+
+    TODO: Check for bad np array.all() comparisons.
+    """
 
     assert setup.MAXIMUM_ITERATIONS == 30
     assert setup.PIXEL_RESOLUTION == 0.001
@@ -37,6 +40,12 @@ def test_configuration(setup):
 
     assert setup.chessboard3d_points == []
     assert setup.chessboard2d_points == []
+
+
+def test_help_options(setup):
+    """
+    Both '-h' and '--help' should produce help output.
+    """
 
     runner = CliRunner()
     result = runner.invoke(cv2stuff.cli, '-h')
