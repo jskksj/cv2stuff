@@ -64,6 +64,7 @@ def test_path():
     bad path.
     """
     runner = CliRunner()
+
     result = runner.invoke(cv2stuff.find_chessboard_corners,
                            ['images/undistort.jpg'])
     assert 'images/undistort.jpg' in result.output
@@ -73,3 +74,8 @@ def test_path():
                            ['doesNotExist'])
     assert 'Error:' in result.output
     assert result.exit_code == 2
+
+    result = runner.invoke(cv2stuff.find_chessboard_corners,
+                           ['images/my*.jpg'])
+    assert 'images/' in result.output
+    assert result.exit_code == 0

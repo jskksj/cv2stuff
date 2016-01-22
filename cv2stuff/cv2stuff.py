@@ -60,6 +60,6 @@ def cli(ctx):
 
 
 @cli.command()
-@click.argument('images', type=click.Path(exists=True))
+@click.argument('images', type=click.Path(exists=True), nargs=-1)
 def find_chessboard_corners(images):
     click.echo(click.format_filename(images))
