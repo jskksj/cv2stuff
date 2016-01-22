@@ -4,6 +4,9 @@ import pytest
 import cv2
 import numpy as np
 
+from click.testing import CliRunner
+from cv2stuff import cv2stuff
+
 
 @pytest.fixture
 def setup():
@@ -34,6 +37,10 @@ def test_configuration(setup):
 
     assert setup.chessboard3d_points == []
     assert setup.chessboard2d_points == []
+
+    runner = CliRunner()
+    result = runner.invoke(cv2stuff.cli, '-h')
+    assert result.exit_code == 0
 
 
 def test_cli():

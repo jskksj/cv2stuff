@@ -1,4 +1,4 @@
-"""Command Line Group for OpenCV Functions"""
+"""Command Line Operations for OpenCV Functions"""
 
 import cv2
 import click
