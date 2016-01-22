@@ -58,24 +58,53 @@ def test_help_options():
     assert 'Usage' in result.output
 
 
-def test_path():
+def test_path_one_file():
     """
-    For now just echo back a path if it is valid and an error for a
-    bad path.
+    Echo one existing file.
     """
     runner = CliRunner()
 
+    # echo name of one image file
     result = runner.invoke(cv2stuff.find_chessboard_corners,
                            ['images/undistort.jpg'])
     assert 'images/undistort.jpg' in result.output
     assert result.exit_code == 0
 
+
+def test_path_file_missing():
+    """
+    Show error on non existing path.
+    """
+    runner = CliRunner()
+
+    # echo error for missing image file
     result = runner.invoke(cv2stuff.find_chessboard_corners,
                            ['doesNotExist'])
     assert 'Error:' in result.output
     assert result.exit_code == 2
 
+
+def test_path_empty_command():
+    """
+    Echo nothing given nothing.
+    """
+    runner = CliRunner()
+
+    # echo nothing for nothing on command line
+    result = runner.invoke(cv2stuff.find_chessboard_corners,
+                           [''])
+    assert '' in result.output
+    assert result.exit_code == 2
+
+
+def test_path_globbed_files():
+    """
+    Echo list of files in globbed argument.
+    """
+    runner = CliRunner()
+
+    # echo names of globbed files
     result = runner.invoke(cv2stuff.find_chessboard_corners,
                            ['images/my*.jpg'])
     assert 'images/' in result.output
-    assert result.exit_code == 0
+    assert result.exit_code == 2
