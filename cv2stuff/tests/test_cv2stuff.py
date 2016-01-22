@@ -66,4 +66,9 @@ def test_path():
     result = runner.invoke(cv2stuff.find_chessboard_corners,
                            ['images/undistort.jpg'])
     assert 'images/undistort.jpg' in result.output
-    # assert result.exit_code == 0
+    assert result.exit_code == 0
+
+    result = runner.invoke(cv2stuff.find_chessboard_corners,
+                           ['doesNotExist'])
+    assert 'Error:' in result.output
+    assert result.exit_code == 2
