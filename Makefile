@@ -25,7 +25,7 @@ help:
 	@echo "dist - package"
 	@echo "install - install the package to the active Python's site-packages"
 
-clean: clean-build clean-pyc clean-test
+clean: clean-build clean-pyc clean-test clean-vim
 
 clean-build:
 	rm -fr build/
@@ -45,8 +45,12 @@ clean-test:
 	rm -f .coverage
 	rm -fr htmlcov/
 
+clean-vim:
+	find . -name '*.swp' -exec rm -f {} +
+	find . -name '*.swo' -exec rm -f {} +
+
 lint:
-	flake8 cv2stuff tests
+	flake8 cv2stuff cv2stuff/tests
 
 test:
 	python setup.py test
@@ -64,7 +68,7 @@ docs:
 	rm -f docs/cv2stuff.rst
 	rm -f docs/tests.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ cv2stuff tests
+	sphinx-apidoc -o docs/ cv2stuff 
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html

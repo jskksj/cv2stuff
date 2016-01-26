@@ -62,4 +62,57 @@ def cli(ctx):
 @cli.command()
 @click.argument('images', nargs=-1, type=click.Path(exists=True),)
 def click_paths(images):
+    """
+    This is just for demonstrating how to test click path functioning.
+    """
     [click.echo(click.format_filename(image)) for image in images]
+
+
+def show_image(image_path):
+    """
+    Display an image
+    """
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    cv2.imshow('color', image)
+    cv2.waitKey(0)
+
+
+@cli.command()
+@click.argument('images', nargs=-1, type=click.Path(exists=True),)
+def show_images(images):
+    """
+    Display one or more images.
+    """
+    [show_image(image) for image in images]
+    cv2.destroyAllWindows()
+
+
+def find_points(ctx, image_path):
+    """
+    Get the object and image points.
+    """
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    found, corners_rough = cv2.findChessboardCorners(gray,
+                                                     (ctx.COLUMNS, ctx.ROWS),
+                                                     None)
+
+    if found:
+        ctx.chessboard_points.append(ctx.chessboard3d_points)
+        corners_fine = cv2.cornerSubPix(gray,
+                                        corners_rough,
+                                        (11, 11),
+                                        (-1, -1),
+                                        ctx.critera)
+
+    ctx.chessboard2d_points.append(corners_fine)
+
+
+@cli.command()
+@click.argument('images', nargs=-1, type=click.Path(exists=True),)
+@click.pass_context
+def find_all_points(ctx, images):
+    """
+    Return the object and image points for all images.
+    """

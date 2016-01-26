@@ -13,7 +13,6 @@ Contents:
    :glob:
 
    cv2stuff
-   tests
    notes/*
    todo
    cookiecutter
