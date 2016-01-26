@@ -42,6 +42,9 @@ def test_configuration(setup):
     assert setup.chessboard3d_points == []
     assert setup.chessboard2d_points == []
 
+    assert setup.winSize == (11, 11)
+    assert setup.minusOne == (-1, -1)
+
 
 def test_help_options():
     """

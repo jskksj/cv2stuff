@@ -33,6 +33,9 @@ class Configuration(object):
         self.chessboard3d_points = []
         self.chessboard2d_points = []
 
+        self.winSize = (11, 11)
+        self.minusOne = (-1, -1)
+
 
 pass_configuration = click.make_pass_decorator(Configuration)
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -54,6 +57,19 @@ def cli(ctx):
 
     The default behavior is to stop on either 30 iterations or
     1/1000 pixel resolution.
+
+    winSize = (11, 11):
+        Half of the side length of the search window.
+        For example, if winSize=Size(5,5),
+        then a  5*2+1 \times 5*2+1 = 11 \times 11 search window is used.
+
+    minusOne = (-1, -1):
+        Half of the size of the dead region in the middle of the search zone
+        over which the summation in the formula below is not done.
+        It is used sometimes to avoid possible singularities of the
+        autocorrelation matrix.
+        The value of (-1,-1) indicates that there is no such a size and
+        zeroOne indicate there is.
     """
 
     ctx.obj = Configuration()
@@ -100,7 +116,7 @@ def find_points_rough(ctx, image_path):
     return(found, corners_rough)
 
 
-def find_points_fine(ctx, found, image_path, gray, corners_rough):
+def find_points_fine(ctx, image_path, gray, corners_rough):
     """
     Get the object and image points at the sub pixel level.
     """
