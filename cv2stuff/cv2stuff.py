@@ -87,24 +87,29 @@ def show_images(images):
     cv2.destroyAllWindows()
 
 
-def find_points(ctx, image_path):
+def find_points_rough(ctx, image_path):
     """
-    Get the object and image points.
+    Get the object and image points at the pixel level.
     """
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     found, corners_rough = cv2.findChessboardCorners(gray,
                                                      (ctx.COLUMNS, ctx.ROWS),
-                                                     None)
+                                                     flags=None)
+    return(found, corners_rough)
 
-    if found:
-        ctx.chessboard_points.append(ctx.chessboard3d_points)
-        corners_fine = cv2.cornerSubPix(gray,
-                                        corners_rough,
-                                        (11, 11),
-                                        (-1, -1),
-                                        ctx.critera)
+
+def find_points_fine(ctx, found, image_path, gray, corners_rough):
+    """
+    Get the object and image points at the sub pixel level.
+    """
+    ctx.chessboard_points.append(ctx.chessboard3d_points)
+    corners_fine = cv2.cornerSubPix(gray,
+                                    corners_rough,
+                                    (11, 11),
+                                    (-1, -1),
+                                    ctx.critera)
 
     ctx.chessboard2d_points.append(corners_fine)
 
