@@ -11,8 +11,7 @@ from cv2stuff import cv2stuff
 @pytest.fixture
 def setup():
     """Return a Configuration object."""
-    import cv2stuff.cv2stuff
-    return(cv2stuff.cv2stuff.Configuration())
+    return(cv2stuff.Configuration())
 
 
 def test_configuration(setup):
@@ -107,3 +106,14 @@ def test_path_globbed_files():
     result = runner.invoke(cv2stuff.click_paths, ['images/my*.jpg'])
     assert 'images/' in result.output
     assert result.exit_code == 2
+
+
+def test_finding_points(setup):
+    """
+    Processing images should result in 2d and 3d points in the ctx
+    object.
+    """
+    found, corners_rough = cv2stuff.find_points_rough(setup, "images/undistort")
+    assert found is True
+    assert len(setup.chessboard2d_points) != 0
+    assert len(setup.chessboard3d_points) != 0
