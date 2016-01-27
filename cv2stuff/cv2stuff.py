@@ -1,4 +1,33 @@
-"""Command Line Operations for OpenCV Functions"""
+"""
+Command Line Operations for OpenCV Functions
+
+By default this program should reconize a chessboard image with seven
+columns and six rows.  Since that is the number of 'inner' corners the
+chessboard image actually has given it's 8 columns by 7 rows of squares.
+
+TERM_CRITERIA_MAX_ITER: iteration stop
+TERM_CRITERIA_EPS:      subpixel resolution stop
+
+The default behavior is to stop on either 30 iterations or
+1/1000 pixel resolution.
+
+winSize = (11, 11):
+    Half of the side length of the search window.
+
+    For example, if winSize=Size(5,5), then a  5*2+1 by 5*2+1 ==
+    11 by 11 search window is used.
+
+minusOne = (-1, -1):
+    Half of the size of the dead region in the middle of the search zone
+    over which the summation in the formula below is not done.
+
+    It is used sometimes to avoid possible singularities of the
+    autocorrelation matrix.
+
+    The value of (-1,-1) indicates that there is no such a size of a
+    window and zeroOne indicate there is.
+"""
+
 
 import cv2
 import click
@@ -44,35 +73,12 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.pass_context
 def cli(ctx):
-    """
-    By default this program should reconize a chessboard image with seven
-    columns and six rows.  Since that is the number of 'inner' corners the
-    chessboard image actually has 8 columns of square by 7 rows.
-
-    The termination criteria for finding subpixel centers is tostop on either
-    maximum iterations or subpixel resolution.
-
-    TERM_CRITERIA_MAX_ITER: iteration stop
-    TERM_CRITERIA_EPS:      subpixel resolution stop
-
-    The default behavior is to stop on either 30 iterations or
-    1/1000 pixel resolution.
-
-    winSize = (11, 11):
-        Half of the side length of the search window.
-        For example, if winSize=Size(5,5),
-        then a  5*2+1 \times 5*2+1 = 11 \times 11 search window is used.
-
-    minusOne = (-1, -1):
-        Half of the size of the dead region in the middle of the search zone
-        over which the summation in the formula below is not done.
-        It is used sometimes to avoid possible singularities of the
-        autocorrelation matrix.
-        The value of (-1,-1) indicates that there is no such a size and
-        zeroOne indicate there is.
-    """
-
     ctx.obj = Configuration()
+
+
+# assign module docstring to the cli for command line help.
+# unfortunately it isn't working as expected.
+cli.__doc__ = __doc__
 
 
 @cli.command()
@@ -118,7 +124,7 @@ def find_points_rough(ctx, image_path):
 
 def find_points_fine(ctx, image_path, gray, corners_rough):
     """
-    Get the object and image points at the sub pixel level.
+    Get the object and image points at the **sub** pixel level.
     """
     ctx.chessboard_points.append(ctx.chessboard3d_points)
     corners_fine = cv2.cornerSubPix(gray,
