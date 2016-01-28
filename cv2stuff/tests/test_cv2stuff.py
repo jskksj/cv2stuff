@@ -9,12 +9,15 @@ from cv2stuff import cv2stuff
 
 
 @pytest.fixture
-def setup():
+def ctx():
     """Return a Configuration object."""
-    return(cv2stuff.Configuration())
+    setup = cv2stuff.Configuration()
+    # py.test has to be run in cv2stuff for this to work.
+    setup.test_image_path = "cv2stuff/tests/images/"
+    return(setup)
 
 
-def test_configuration(setup):
+def test_configuration(ctx):
     """Check the Configuration defaults.
 
     `Comparing <http://stackoverflow.com/questions/10580676/
@@ -25,24 +28,24 @@ def test_configuration(setup):
     TODO: Check for bad np array.all() comparisons.
     """
 
-    assert setup.MAXIMUM_ITERATIONS == 30
-    assert setup.PIXEL_RESOLUTION == 0.001
-    assert setup.criteria == (cv2.TERM_CRITERIA_MAX_ITER +
-                              cv2.TERM_CRITERIA_EPS,
-                              setup.MAXIMUM_ITERATIONS,
-                              setup.PIXEL_RESOLUTION)
-    assert setup.ROWS == 6
-    assert setup.COLUMNS == 7
-    assert setup.chessboard_points.shape == (setup.ROWS * setup.COLUMNS, 3)
+    assert ctx.MAXIMUM_ITERATIONS == 30
+    assert ctx.PIXEL_RESOLUTION == 0.001
+    assert ctx.criteria == (cv2.TERM_CRITERIA_MAX_ITER +
+                            cv2.TERM_CRITERIA_EPS,
+                            ctx.MAXIMUM_ITERATIONS,
+                            ctx.PIXEL_RESOLUTION)
+    assert ctx.ROWS == 5
+    assert ctx.COLUMNS == 7
+    assert ctx.chessboard_points.shape == (ctx.ROWS * ctx.COLUMNS, 3)
 
-    index = np.mgrid[0:setup.COLUMNS, 0:setup.ROWS].T.reshape(-1, 2)
-    assert (setup.chessboard_points[:, :2] == index).all() == True
+    index = np.mgrid[0:ctx.COLUMNS, 0:ctx.ROWS].T.reshape(-1, 2)
+    assert (ctx.chessboard_points[:, :2] == index).all() == True
 
-    assert setup.chessboard3d_points == []
-    assert setup.chessboard2d_points == []
+    assert ctx.chessboard3d_points == []
+    assert ctx.chessboard2d_points == []
 
-    assert setup.winSize == (11, 11)
-    assert setup.minusOne == (-1, -1)
+    assert ctx.winSize == (11, 11)
+    assert ctx.minusOne == (-1, -1)
 
 
 def test_help_options():
@@ -60,26 +63,28 @@ def test_help_options():
     assert 'Usage' in result.output
 
 
-def test_path_one_file():
+def test_path_one_file(ctx):
     """
     Echo one existing file.
     """
     runner = CliRunner()
 
     # echo name of one image file
-    result = runner.invoke(cv2stuff.click_paths, ['images/undistort.jpg'])
-    assert 'images/undistort.jpg' in result.output
+    result = runner.invoke(cv2stuff.click_paths, [ctx.test_image_path +
+                                                  'undistort.jpg'])
+    assert 'undistort.jpg' in result.output
     assert result.exit_code == 0
 
 
-def test_path_file_missing():
+def test_path_file_missing(ctx):
     """
     Show error on non existing path.
     """
     runner = CliRunner()
 
     # echo error for missing image file
-    result = runner.invoke(cv2stuff.click_paths, ['doesNotExist'])
+    result = runner.invoke(cv2stuff.click_paths, [ctx.test_image_path +
+                                                  'doesNotExist'])
     assert 'Error:' in result.output
     assert result.exit_code == 2
 
@@ -96,25 +101,27 @@ def test_path_empty_command():
     assert result.exit_code == 2
 
 
-def test_path_globbed_files():
+def test_path_globbed_files(ctx):
     """
     Echo list of files in globbed argument.
     """
     runner = CliRunner()
 
     # echo names of globbed files
-    result = runner.invoke(cv2stuff.click_paths, ['images/my*.jpg'])
-    assert 'images/' in result.output
+    result = runner.invoke(cv2stuff.click_paths, [ctx.test_image_path +
+                                                  'my*.jpg'])
+    assert '' in result.output
     assert result.exit_code == 2
 
 
-def test_finding_points(setup):
+def test_finding_points(ctx):
     """
     Processing images should result in 2d and 3d points in the ctx
     object.
     """
-    found, corners_rough = cv2stuff.find_points_rough(setup,
-                                                      "../../images/undistort")
+    found, corners_rough = cv2stuff.find_points_rough(ctx,
+                                                      ctx.test_image_path +
+                                                      "undistort.jpg")
     assert found is True
-    assert len(setup.chessboard2d_points) != 0
-    assert len(setup.chessboard3d_points) != 0
+    assert len(ctx.chessboard2d_points) != 0
+    assert len(ctx.chessboard3d_points) != 0
