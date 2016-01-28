@@ -114,7 +114,7 @@ def test_finding_points(setup):
     object.
     """
     found, corners_rough = cv2stuff.find_points_rough(setup,
-                                                      "images/undistort")
+                                                      "../../images/undistort")
     assert found is True
     assert len(setup.chessboard2d_points) != 0
     assert len(setup.chessboard3d_points) != 0

@@ -114,7 +114,7 @@ def find_points_rough(ctx, image_path):
     Get the object and image points at the pixel level.
     """
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-    if image.any():
+    if image:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         found, corners_rough = cv2.findChessboardCorners(gray,
                                                          (ctx.COLUMNS,
