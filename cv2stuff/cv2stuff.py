@@ -51,7 +51,7 @@ class Configuration(object):
                          self.PIXEL_RESOLUTION)
 
         self.COLUMNS = 7
-        self.ROWS = 6
+        self.ROWS = 5
         # Size the array to support the number of inner points in the board.
         self.chessboard_points = np.zeros((self.COLUMNS * self.ROWS, 3),
                                           np.float32)
@@ -114,13 +114,12 @@ def find_points_rough(ctx, image_path):
     Get the object and image points at the pixel level.
     """
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-    if image:
+    if image.any():
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
         found, corners_rough = cv2.findChessboardCorners(gray,
                                                          (ctx.COLUMNS,
                                                           ctx.ROWS),
-                                                         flags=None)
+                                                         None)
         return(found, corners_rough)
     else:
         found = False

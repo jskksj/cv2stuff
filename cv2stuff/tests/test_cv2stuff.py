@@ -113,7 +113,8 @@ def test_finding_points(setup):
     Processing images should result in 2d and 3d points in the ctx
     object.
     """
-    found, corners_rough = cv2stuff.find_points_rough(setup, "images/undistort")
+    found, corners_rough = cv2stuff.find_points_rough(setup,
+                                                      "images/undistort")
     assert found is True
     assert len(setup.chessboard2d_points) != 0
     assert len(setup.chessboard3d_points) != 0
