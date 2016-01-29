@@ -114,14 +114,19 @@ def test_path_globbed_files(ctx):
     assert result.exit_code == 2
 
 
-def test_finding_points(ctx):
+def test_find_points_coarse(ctx):
     """
-    Processing images should result in 2d and 3d points in the ctx
-    object.
+    Processing images should result in an array of pixel points."
     """
-    found, corners_rough = cv2stuff.find_points_rough(ctx,
-                                                      ctx.test_image_path +
-                                                      "undistort.jpg")
+    found, corners_coarse = \
+        cv2stuff.find_points_coarse(ctx,
+                                    ctx.test_image_path +
+                                    "undistort.jpg")
     assert found is True
-    assert len(ctx.chessboard2d_points) != 0
-    assert len(ctx.chessboard3d_points) != 0
+
+
+def test_find_all_points(ctx):
+    """
+    This should result in arrays of points for 3d objects and 2d image
+    points.
+    """

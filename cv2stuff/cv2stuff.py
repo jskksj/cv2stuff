@@ -60,13 +60,18 @@ class Configuration(object):
                                                  0:self.ROWS].T.reshape(-1, 2)
 
         self.chessboard3d_points = []
+        # When done chessboard3d_points will have one copy of chessboard_points
+        # for each image processed.
         self.chessboard2d_points = []
+        # When done chessboard2d_points will have an array of subpixel results
+        # for each image processed.
+        self.corners = []
 
         self.winSize = (11, 11)
         self.minusOne = (-1, -1)
 
 
-pass_configuration = click.make_pass_decorator(Configuration)
+nass_configuration = click.make_pass_decorator(Configuration)
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
@@ -109,30 +114,34 @@ def show_images(images):
     cv2.destroyAllWindows()
 
 
-def find_points_rough(ctx, image_path):
+# TODO: refactor so that path is the image itself.  Check the image for None
+# outside of this function.
+def find_points_coarse(ctx, image_path):
     """
     Get the object and image points at the pixel level.
     """
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     if image is not None:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        found, corners_rough = cv2.findChessboardCorners(gray,
-                                                         (ctx.COLUMNS,
-                                                          ctx.ROWS),
-                                                         None)
-        return(found, corners_rough)
+        flags = None
+        found, corners_coarse = cv2.findChessboardCorners(gray,
+                                                          (ctx.COLUMNS,
+                                                           ctx.ROWS),
+                                                          flags)
+
+        return(found, corners_coarse)
     else:
         found = False
         return(found, [])
 
 
-def find_points_fine(ctx, image_path, gray, corners_rough):
+def find_points_fine(ctx, image_path, gray, corners_coarse):
     """
     Get the object and image points at the **sub** pixel level.
     """
     ctx.chessboard_points.append(ctx.chessboard3d_points)
     corners_fine = cv2.cornerSubPix(gray,
-                                    corners_rough,
+                                    corners_coarse,
                                     ctx.winSize,
                                     ctx.minusOne,
                                     ctx.critera)
