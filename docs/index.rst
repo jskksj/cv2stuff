@@ -13,6 +13,7 @@ Contents:
    :glob:
 
    cv2stuff
+   readme
    notes/*
    todo
    cookiecutter
@@ -20,7 +21,6 @@ Contents:
    contributing
    history
    installation
-   readme
    usage
 
 Indices and tables

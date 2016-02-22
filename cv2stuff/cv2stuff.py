@@ -116,13 +116,12 @@ def show_images(images):
 
 # TODO: refactor so that path is the image itself.  Check the image for None
 # outside of this function.
-def find_points_coarse(ctx, image_path):
+# The color and gray images could even be kept in the ctx object.
+def find_points_coarse(ctx, image, gray):
     """
     Get the object and image points at the pixel level.
     """
-    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     if image is not None:
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         flags = None
         found, corners_coarse = cv2.findChessboardCorners(gray,
                                                           (ctx.COLUMNS,

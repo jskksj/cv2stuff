@@ -18,6 +18,8 @@ Command line scripts in Python Click
 * Free software: ISC license
 * Documentation: https://cv2stuff.readthedocs.org.
 
+Calibrate: Create a camera intrinsics matrix from a series of images of chessboard patterns.
+
 Features
 --------
 

@@ -118,10 +118,11 @@ def test_find_points_coarse(ctx):
     """
     Processing images should result in an array of pixel points."
     """
-    found, corners_coarse = \
-        cv2stuff.find_points_coarse(ctx,
-                                    ctx.test_image_path +
-                                    "undistort.jpg")
+    image = cv2.imread(ctx.test_image_path + "undistort.jpg", cv2.IMREAD_COLOR)
+    if image is not None:
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        found, corners_coarse = cv2stuff.find_points_coarse(ctx, image, gray)
+
     assert found is True
 
 
