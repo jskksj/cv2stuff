@@ -59,14 +59,15 @@ class Configuration(object):
         self.chessboard_points[:, :2] = np.mgrid[0:self.COLUMNS,
                                                  0:self.ROWS].T.reshape(-1, 2)
 
-        self.chessboard3d_points = []
         # When done chessboard3d_points will have one copy of chessboard_points
         # for each image processed.
-        self.chessboard2d_points = []
+        self.chessboard3d_points = []
+
         # When done chessboard2d_points will have an array of subpixel results
         # for each image processed.
-        self.corners = []
+        self.chessboard2d_points = []
 
+        self.corners = []
         self.winSize = (11, 11)
         self.minusOne = (-1, -1)
 
