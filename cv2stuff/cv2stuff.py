@@ -72,7 +72,7 @@ class Configuration(object):
         self.minusOne = (-1, -1)
 
 
-nass_configuration = click.make_pass_decorator(Configuration)
+pass_configuration = click.make_pass_decorator(Configuration)
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
