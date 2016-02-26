@@ -25,8 +25,8 @@ def test_configuration(ctx):
     numpy arrays.  The link says that the test I am using can cause certain
     kinds of differing arrays to test True when they should not.
 
-    TODO: Check for bad np array.all() comparisons.
     """
+# TODO: Check for bad np array.all() comparisons.
 
     assert ctx.MAXIMUM_ITERATIONS == 30
     assert ctx.PIXEL_RESOLUTION == 0.001
