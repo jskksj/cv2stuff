@@ -114,7 +114,7 @@ def test_path_globbed_files(ctx):
     assert result.exit_code == 2
 
 
-def test_find_points_coarse(ctx):
+def test_find_points_coarse_one_image(ctx):
     """
     Processing images should result in an array of pixel points."
     """
