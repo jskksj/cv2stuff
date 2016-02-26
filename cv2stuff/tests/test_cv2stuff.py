@@ -114,14 +114,14 @@ def test_path_globbed_files(ctx):
     assert result.exit_code == 2
 
 
-def test_find_points_coarse_one_image(ctx):
+def test_find_points_pixel_one_image(ctx):
     """
     Processing images should result in an array of pixel points."
     """
     image = cv2.imread(ctx.test_image_path + "undistort.jpg", cv2.IMREAD_COLOR)
     if image is not None:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        found, corners_coarse = cv2stuff.find_points_coarse(ctx, image, gray)
+        found, corners_pixel = cv2stuff.find_points_pixel(ctx, image, gray)
 
     assert found is True
 # raise RuntimeError('Chessboard corners not found')
@@ -130,5 +130,5 @@ def test_find_points_coarse_one_image(ctx):
 def test_find_all_points(ctx):
     """
     This should result in arrays of points for 3d objects and 2d image
-    points.
+    points from processing a number of images.
     """

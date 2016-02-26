@@ -118,30 +118,30 @@ def show_images(images):
 # TODO: refactor so that path is the image itself.  Check the image for None
 # outside of this function.
 # The color and gray images could even be kept in the ctx object.
-def find_points_coarse(ctx, image, gray):
+def find_points_pixel(ctx, image, gray):
     """
     Get the object and image points at the pixel level.
     """
     if image is not None:
         flags = None
-        found, corners_coarse = cv2.findChessboardCorners(gray,
-                                                          (ctx.COLUMNS,
-                                                           ctx.ROWS),
-                                                          flags)
-        return(found, corners_coarse)
+        found, corners_pixel = cv2.findChessboardCorners(gray,
+                                                         (ctx.COLUMNS,
+                                                          ctx.ROWS),
+                                                         flags)
+        return(found, corners_pixel)
     else:
         raise RuntimeError('Image specified not found')
 #        found = False
 #        return(found, [])
 
 
-def find_points_subpixel(ctx, image_path, gray, corners_coarse):
+def find_points_subpixel(ctx, image_path, gray, corners_pixel):
     """
     Get the object and image points at the **sub** pixel level.
     """
     ctx.chessboard_points.append(ctx.chessboard3d_points)
     corners_subpixel = cv2.cornerSubPix(gray,
-                                        corners_coarse,
+                                        corners_pixel,
                                         ctx.winSize,
                                         ctx.minusOne,
                                         ctx.critera)
