@@ -114,6 +114,8 @@ def test_path_globbed_files(ctx):
     assert result.exit_code == 2
 
 
+# TODO: This is all well and fine but I think missing images should be checked
+# elsewhere.
 def test_raise_exception_for_missing_image(ctx):
     """
     An exception should be raised if the function is called without an
