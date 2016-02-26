@@ -122,19 +122,14 @@ def find_points_pixel(ctx, image, gray):
     """
     Get the object and image points at the pixel level.
     """
-    # TODO: I probably should not be testing for images all the time.
-    # Instead, an exception should be raised for 'not found'.
-    if image is not None:
-        flags = None
-        found, corners_pixel = cv2.findChessboardCorners(gray,
-                                                         (ctx.COLUMNS,
-                                                          ctx.ROWS),
-                                                         flags)
-        return(found, corners_pixel)
-    else:
-        raise RuntimeError('Must pass an image to this function')
-#        found = False
-#        return(found, [])
+    flags = None
+    found, corners_pixel = cv2.findChessboardCorners(gray,
+                                                     (ctx.COLUMNS,
+                                                      ctx.ROWS),
+                                                     flags)
+    if not found:
+        raise RuntimeError('Chessboard corners not found')
+    return(found, corners_pixel)
 
 
 def find_points_subpixel(ctx, image_path, gray, corners_pixel):

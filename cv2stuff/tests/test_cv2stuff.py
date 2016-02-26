@@ -114,17 +114,16 @@ def test_path_globbed_files(ctx):
     assert result.exit_code == 2
 
 
-# TODO: This is all well and fine but I think missing images should be checked
-# elsewhere.
-def test_raise_exception_for_missing_image(ctx):
+def test_raise_exception_for_corners_not_found(ctx):
     """
-    An exception should be raised if the function is called without an
-    image to process.
+    Raise an exception when chessboard corners cannot be found at the
+    pixel level.
     """
-    image = None
-    gray = None
-    with pytest.raises(RuntimeError):
-        found, corners_pixel = cv2stuff.find_points_pixel(ctx, image, gray)
+    image = cv2.imread(ctx.test_image_path + "blank.jpg", cv2.IMREAD_COLOR)
+    if image is not None:
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        with pytest.raises(RuntimeError):
+            found, corners_pixel = cv2stuff.find_points_pixel(ctx, image, gray)
 
 
 def test_find_points_pixel_one_image(ctx):
