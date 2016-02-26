@@ -26,7 +26,7 @@ def test_configuration(ctx):
     kinds of differing arrays to test True when they should not.
 
     """
-# TODO: Check for bad np array.all() comparisons.
+# TODO: Test for bad np array.all() comparisons.
 
     assert ctx.MAXIMUM_ITERATIONS == 30
     assert ctx.PIXEL_RESOLUTION == 0.001

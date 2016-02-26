@@ -1,31 +1,6 @@
 """
 Command Line Operations for OpenCV Functions
 
-By default this program should reconize a chessboard image with seven
-columns and six rows.  Since that is the number of 'inner' corners the
-chessboard image actually has given it's 8 columns by 7 rows of squares.
-
-TERM_CRITERIA_MAX_ITER: iteration stop
-TERM_CRITERIA_EPS:      subpixel resolution stop
-
-The default behavior is to stop on either 30 iterations or
-1/1000 pixel resolution.
-
-winSize = (11, 11):
-    Half of the side length of the search window.
-
-    For example, if winSize=Size(5,5), then a  5*2+1 by 5*2+1 ==
-    11 by 11 search window is used.
-
-minusOne = (-1, -1):
-    Half of the size of the dead region in the middle of the search zone
-    over which the summation in the formula below is not done.
-
-    It is used sometimes to avoid possible singularities of the
-    autocorrelation matrix.
-
-    The value of (-1,-1) indicates that there is no such a size of a
-    window and zeroOne indicate there is.
 """
 
 
@@ -35,12 +10,39 @@ import numpy as np
 
 
 class Configuration(object):
-    """Set and maintain configuration defaults for the rest of the
+    """Set and maintain configuration values for the rest of the
     application.
     """
 
     def __init__(self):
-        """Initilize the defaults.
+        """
+        Initilize the defaults.
+
+        By default this program should reconize a chessboard image with seven
+        columns and six rows.  Since that is the number of 'inner' corners the
+        chessboard image actually has given it's 8 columns by 7 rows of squares.
+
+        TERM_CRITERIA_MAX_ITER: iteration stop
+        TERM_CRITERIA_EPS:      subpixel resolution stop
+
+        The default behavior is to stop on either 30 iterations or
+        1/1000 pixel resolution.
+
+        winSize = (11, 11):
+        Half of the side length of the search window.
+
+        For example, if winSize=Size(5,5), then a  5*2+1 by 5*2+1 ==
+        11 by 11 search window is used.
+
+        minusOne = (-1, -1):
+        Half of the size of the dead region in the middle of the search zone
+        over which the summation in the formula below is not done.
+
+        It is used sometimes to avoid possible singularities of the
+        autocorrelation matrix.
+
+        The value of (-1,-1) indicates that there is no such a size of a
+        window and zeroOne indicate there is.
         """
 
         self.MAXIMUM_ITERATIONS = 30
@@ -50,21 +52,24 @@ class Configuration(object):
                          self.MAXIMUM_ITERATIONS,
                          self.PIXEL_RESOLUTION)
 
+        # Calibration chessboard dimensions.
         self.COLUMNS = 7
         self.ROWS = 5
-        # Size the array to support the number of inner points in the board.
+
+        # Size the array to support the number of inner points in the
+        # chessboard.
         self.chessboard_points = np.zeros((self.COLUMNS * self.ROWS, 3),
                                           np.float32)
         # Fill the first two columns with an index.
         self.chessboard_points[:, :2] = np.mgrid[0:self.COLUMNS,
                                                  0:self.ROWS].T.reshape(-1, 2)
 
-        # When done chessboard3d_points will have one copy of chessboard_points
-        # for each image processed.
+        # 3D points are an estimate of the 'pose' of each chessboard in
+        # cartesian space.
         self.chessboard3d_points = []
 
-        # When done chessboard2d_points will have an array of subpixel results
-        # for each image processed.
+        # 2D points are the subpixel coordiates of each chessboard images
+        # corners.
         self.chessboard2d_points = []
 
         self.corners = []
@@ -72,6 +77,7 @@ class Configuration(object):
         self.minusOne = (-1, -1)
 
 
+# Make click accept -h for help.
 pass_configuration = click.make_pass_decorator(Configuration)
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -79,12 +85,34 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.pass_context
 def cli(ctx):
+    """
+    By default this program should reconize a chessboard image with seven
+    columns and six rows.  Since that is the number of 'inner' corners the
+    chessboard image actually has given it's 8 columns by 7 rows of squares.
+
+    TERM_CRITERIA_MAX_ITER: iteration stop
+    TERM_CRITERIA_EPS:      subpixel resolution stop
+
+    The default behavior is to stop on either 30 iterations or
+    1/1000 pixel resolution.
+
+    winSize = (11, 11):
+    Half of the side length of the search window.
+
+    For example, if winSize=Size(5,5), then a  5*2+1 by 5*2+1 ==
+    11 by 11 search window is used.
+
+    minusOne = (-1, -1):
+    Half of the size of the dead region in the middle of the search zone
+    over which the summation in the formula below is not done.
+
+    It is used sometimes to avoid possible singularities of the
+    autocorrelation matrix.
+
+    The value of (-1,-1) indicates that there is no such a size of a
+    window and zeroOne indicate there is.
+    """
     ctx.obj = Configuration()
-
-
-# assign module docstring to the cli for command line help.
-# unfortunately it isn't working as expected.
-cli.__doc__ = __doc__
 
 
 @cli.command()
@@ -98,7 +126,9 @@ def click_paths(images):
 
 def show_image(image_path):
     """
-    Display an image
+    Utility function.
+
+    Display one single image.
     """
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     cv2.imshow('color', image)
@@ -115,11 +145,11 @@ def show_images(images):
     cv2.destroyAllWindows()
 
 
-# TODO: refactor so that path is the image itself.  Check the image for None
-# outside of this function.
-# The color and gray images could even be kept in the ctx object.
+# TODO: The color and gray images could even be kept in the ctx object.
 def find_points_pixel(ctx, image, gray):
     """
+    Utility function.
+
     Get the object and image points at the pixel level.
     """
     flags = None
@@ -132,11 +162,15 @@ def find_points_pixel(ctx, image, gray):
     return(found, corners_pixel)
 
 
+# TODO: not tested yet.
 def find_points_subpixel(ctx, image_path, gray, corners_pixel):
     """
-    Get the object and image points at the **sub** pixel level.
+    Utility function.
+
+    Get the object and image points at the **sub** pixel level for a
+    single image.
     """
-    # TODO: Why am I doing this?
+    # TODO: Why am I doing this?  Where do the 3d points come from?
     ctx.chessboard_points.append(ctx.chessboard3d_points)
     corners_subpixel = cv2.cornerSubPix(gray,
                                         corners_pixel,
