@@ -135,18 +135,18 @@ def find_points_coarse(ctx, image, gray):
 #        return(found, [])
 
 
-def find_points_fine(ctx, image_path, gray, corners_coarse):
+def find_points_subpixel(ctx, image_path, gray, corners_coarse):
     """
     Get the object and image points at the **sub** pixel level.
     """
     ctx.chessboard_points.append(ctx.chessboard3d_points)
-    corners_fine = cv2.cornerSubPix(gray,
-                                    corners_coarse,
-                                    ctx.winSize,
-                                    ctx.minusOne,
-                                    ctx.critera)
+    corners_subpixel = cv2.cornerSubPix(gray,
+                                        corners_coarse,
+                                        ctx.winSize,
+                                        ctx.minusOne,
+                                        ctx.critera)
 
-    ctx.chessboard2d_points.append(corners_fine)
+    ctx.chessboard2d_points.append(corners_subpixel)
 
 
 @cli.command()
