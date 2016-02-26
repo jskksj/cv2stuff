@@ -136,7 +136,6 @@ def test_find_points_pixel_one_image(ctx):
         found, corners_pixel = cv2stuff.find_points_pixel(ctx, image, gray)
 
     assert found is True
-# raise RuntimeError('Chessboard corners not found')
 
 
 def test_find_all_points(ctx):

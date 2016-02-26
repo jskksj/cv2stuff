@@ -136,6 +136,7 @@ def find_points_subpixel(ctx, image_path, gray, corners_pixel):
     """
     Get the object and image points at the **sub** pixel level.
     """
+    # TODO: Why am I doing this?
     ctx.chessboard_points.append(ctx.chessboard3d_points)
     corners_subpixel = cv2.cornerSubPix(gray,
                                         corners_pixel,
