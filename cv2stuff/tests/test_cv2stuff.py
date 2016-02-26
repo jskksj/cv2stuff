@@ -124,6 +124,7 @@ def test_find_points_coarse(ctx):
         found, corners_coarse = cv2stuff.find_points_coarse(ctx, image, gray)
 
     assert found is True
+# raise RuntimeError('Chessboard corners not found')
 
 
 def test_find_all_points(ctx):

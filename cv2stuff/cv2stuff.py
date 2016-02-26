@@ -128,11 +128,11 @@ def find_points_coarse(ctx, image, gray):
                                                           (ctx.COLUMNS,
                                                            ctx.ROWS),
                                                           flags)
-
         return(found, corners_coarse)
     else:
-        found = False
-        return(found, [])
+        raise RuntimeError('Image specified not found')
+#        found = False
+#        return(found, [])
 
 
 def find_points_fine(ctx, image_path, gray, corners_coarse):
