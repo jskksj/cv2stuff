@@ -6,6 +6,5 @@ flake8
 tox
 coverage
 Sphinx
-pytest
 Click
 sphinxcontrib-programoutput

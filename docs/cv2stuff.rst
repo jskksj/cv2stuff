@@ -1,13 +1,6 @@
 cv2stuff package
 ================
 
-Subpackages
------------
-
-.. toctree::
-
-    cv2stuff.tests
-
 Submodules
 ----------
 
