@@ -114,6 +114,17 @@ def test_path_globbed_files(ctx):
     assert result.exit_code == 2
 
 
+def test_raise_exception_for_missing_image(ctx):
+    """
+    An exception should be raised if the function is called without an
+    image to process.
+    """
+    image = None
+    gray = None
+    with pytest.raises(RuntimeError):
+        found, corners_pixel = cv2stuff.find_points_pixel(ctx, image, gray)
+
+
 def test_find_points_pixel_one_image(ctx):
     """
     Processing images should result in an array of pixel points."

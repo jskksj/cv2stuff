@@ -130,7 +130,7 @@ def find_points_pixel(ctx, image, gray):
                                                          flags)
         return(found, corners_pixel)
     else:
-        raise RuntimeError('Image specified not found')
+        raise RuntimeError('Must pass an image to this function')
 #        found = False
 #        return(found, [])
 
