@@ -53,10 +53,7 @@ class Configuration(object):
 
         # If set, this fl ag causes the image to be normalized via
         # cvEqualizeHist() before the thresholding is applied.
-        self.flags = cv2.CV_CALIB_CB_NORMALIZE_IMAGE
-        # If this flag is set, then a variety of additional constraints are
-        # applied to those quadrangles in order to reject false quadrangles.
-        self.flags += cv2.CV_CALIB_CB_FILTER_QUADS
+        self.flags = cv2.CV_CALIB_CB_ADAPTIVE_THRESH
 
 
 # Make click accept -h for help.

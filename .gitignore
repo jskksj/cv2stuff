@@ -55,9 +55,18 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# rope-vim
+.ropeproject
+
 # PyBuilder
 target/
 
 # Vim
 *.swp
 .*.swo
+
+# test images
+cv2stuff/tests/images/left*.jpg
+cv2stuff/tests/images/right*.jpg
+cv2stuff/tests/images/lena.jpg
+cv2stuff/tests/images/chessboard.png
