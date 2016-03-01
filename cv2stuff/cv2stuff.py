@@ -51,6 +51,8 @@ class Configuration(object):
         self.winSize = (11, 11)
         self.minusOne = (-1, -1)
 
+        # The c++ flag names for findChessboardCorners do not appear to be in
+        # the python wrapper.
         self.flags = None
 
 
