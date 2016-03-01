@@ -18,6 +18,7 @@ def ctx():
     setup = cv2stuff.Configuration()
     # py.test has to be run in cv2stuff for this to work.
     setup.test_image_path = "cv2stuff/tests/images/"
+    setup.chessboard_image = 'undistort.jpg'
     return(setup)
 
 
@@ -75,8 +76,8 @@ def test_path_one_file(ctx):
 
     # echo name of one image file
     result = runner.invoke(cv2stuff.click_paths, [ctx.test_image_path +
-                                                  'undistort.jpg'])
-    assert 'undistort.jpg' in result.output
+                                                  ctx.chessboard_image])
+    assert ctx.chessboard_image in result.output
     assert result.exit_code == 0
 
 
@@ -130,20 +131,22 @@ def test_raise_exception_for_corners_not_found(ctx):
             found, corners_pixel = cv2stuff.find_points_pixel(ctx,
                                                               image,
                                                               gray,
-                                                              flags=None)
+                                                              ctx.flags)
 
 
 def test_find_points_pixel_one_image(ctx):
     """
     Processing images should result in an array of pixel points."
     """
-    image = cv2.imread(ctx.test_image_path + "undistort.jpg", cv2.IMREAD_COLOR)
+    image = cv2.imread(ctx.test_image_path +
+                       ctx.chessboard_image,
+                       cv2.IMREAD_COLOR)
     if image is not None:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         found, corners_pixel = cv2stuff.find_points_pixel(ctx,
                                                           image,
                                                           gray,
-                                                          flags=None)
+                                                          ctx.flags)
 
     assert found is True
 

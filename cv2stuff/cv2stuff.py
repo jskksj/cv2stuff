@@ -51,9 +51,7 @@ class Configuration(object):
         self.winSize = (11, 11)
         self.minusOne = (-1, -1)
 
-        # If set, this fl ag causes the image to be normalized via
-        # cvEqualizeHist() before the thresholding is applied.
-        self.flags = cv2.CV_CALIB_CB_ADAPTIVE_THRESH
+        self.flags = None
 
 
 # Make click accept -h for help.
