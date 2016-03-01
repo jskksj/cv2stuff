@@ -70,3 +70,6 @@ cv2stuff/tests/images/left*.jpg
 cv2stuff/tests/images/right*.jpg
 cv2stuff/tests/images/lena.jpg
 cv2stuff/tests/images/chessboard.png
+
+# Samples
+OpenCVExamples/*
