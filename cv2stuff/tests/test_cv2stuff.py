@@ -47,7 +47,7 @@ def test_configuration(ctx):
     index = np.mgrid[0:ctx.COLUMNS, 0:ctx.ROWS].T.reshape(-1, 2)
     assert (ctx.chessboard_points[:, :2] == index).all() == True
 
-    assert ctx.chessboard3d_points == []
+    assert ctx.chessboard_pose == []
     assert ctx.chessboard2d_points == []
 
     assert ctx.winSize == (11, 11)

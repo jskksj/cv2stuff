@@ -56,7 +56,7 @@ coverage.xml
 docs/_build/
 
 # rope-vim
-.ropeproject
+.ropeproject/*
 
 # PyBuilder
 target/

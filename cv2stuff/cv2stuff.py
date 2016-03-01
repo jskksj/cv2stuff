@@ -41,7 +41,7 @@ class Configuration(object):
 
         # 3D points are an estimate of the 'pose' of each chessboard in
         # cartesian space.
-        self.chessboard3d_points = []
+        self.chessboard_pose = []
 
         # 2D points are the subpixel coordiates of each chessboard images
         # corners.
@@ -149,7 +149,7 @@ def find_points_subpixel(ctx, image_path, gray, corners_pixel):
     single image.
     """
     # TODO: Why am I doing this?  Where do the 3d points come from?
-    ctx.chessboard_points.append(ctx.chessboard3d_points)
+    ctx.chessboard_points.append(ctx.chessboard_pose)
     corners_subpixel = cv2.cornerSubPix(gray,
                                         corners_pixel,
                                         ctx.winSize,
