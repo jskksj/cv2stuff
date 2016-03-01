@@ -10,7 +10,11 @@ from cv2stuff import cv2stuff
 
 @pytest.fixture
 def ctx():
-    """Return a Configuration object."""
+    """
+    PyTest Fixture.
+
+    Return a Configuration object.
+    """
     setup = cv2stuff.Configuration()
     # py.test has to be run in cv2stuff for this to work.
     setup.test_image_path = "cv2stuff/tests/images/"
@@ -18,13 +22,13 @@ def ctx():
 
 
 def test_configuration(ctx):
-    """Check the Configuration defaults.
+    """
+    Check the Configuration defaults.
 
     `Comparing <http://stackoverflow.com/questions/10580676/
     comparing-two-numpy-arrays-for-equality-element-wise>`_
     numpy arrays.  The link says that the test I am using can cause certain
     kinds of differing arrays to test True when they should not.
-
     """
 # TODO: Test for bad np array.all() comparisons.
 
@@ -123,7 +127,10 @@ def test_raise_exception_for_corners_not_found(ctx):
     if image is not None:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         with pytest.raises(RuntimeError):
-            found, corners_pixel = cv2stuff.find_points_pixel(ctx, image, gray)
+            found, corners_pixel = cv2stuff.find_points_pixel(ctx,
+                                                              image,
+                                                              gray,
+                                                              flags=None)
 
 
 def test_find_points_pixel_one_image(ctx):
@@ -133,7 +140,10 @@ def test_find_points_pixel_one_image(ctx):
     image = cv2.imread(ctx.test_image_path + "undistort.jpg", cv2.IMREAD_COLOR)
     if image is not None:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        found, corners_pixel = cv2stuff.find_points_pixel(ctx, image, gray)
+        found, corners_pixel = cv2stuff.find_points_pixel(ctx,
+                                                          image,
+                                                          gray,
+                                                          flags=None)
 
     assert found is True
 

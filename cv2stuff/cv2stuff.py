@@ -17,32 +17,6 @@ class Configuration(object):
     def __init__(self):
         """
         Initilize the defaults.
-
-        By default this program should reconize a chessboard image with seven
-        columns and six rows.  Since that is the number of 'inner' corners the
-        chessboard image actually has given it's 8 columns by 7 rows of squares.
-
-        TERM_CRITERIA_MAX_ITER: iteration stop
-        TERM_CRITERIA_EPS:      subpixel resolution stop
-
-        The default behavior is to stop on either 30 iterations or
-        1/1000 pixel resolution.
-
-        winSize = (11, 11):
-        Half of the side length of the search window.
-
-        For example, if winSize=Size(5,5), then a  5*2+1 by 5*2+1 ==
-        11 by 11 search window is used.
-
-        minusOne = (-1, -1):
-        Half of the size of the dead region in the middle of the search zone
-        over which the summation in the formula below is not done.
-
-        It is used sometimes to avoid possible singularities of the
-        autocorrelation matrix.
-
-        The value of (-1,-1) indicates that there is no such a size of a
-        window and zeroOne indicate there is.
         """
 
         self.MAXIMUM_ITERATIONS = 30
@@ -52,7 +26,8 @@ class Configuration(object):
                          self.MAXIMUM_ITERATIONS,
                          self.PIXEL_RESOLUTION)
 
-        # Calibration chessboard dimensions.
+        # Default calibration chessboard dimensions for inner points.  For
+        # an actual chessboard both would be seven.
         self.COLUMNS = 7
         self.ROWS = 5
 
@@ -75,6 +50,13 @@ class Configuration(object):
         self.corners = []
         self.winSize = (11, 11)
         self.minusOne = (-1, -1)
+
+        # If set, this fl ag causes the image to be normalized via
+        # cvEqualizeHist() before the thresholding is applied.
+        self.flags = cv2.CV_CALIB_CB_NORMALIZE_IMAGE
+        # If this flag is set, then a variety of additional constraints are
+        # applied to those quadrangles in order to reject false quadrangles.
+        self.flags += cv2.CV_CALIB_CB_FILTER_QUADS
 
 
 # Make click accept -h for help.
@@ -99,14 +81,14 @@ def cli(ctx):
     winSize = (11, 11):
     Half of the side length of the search window.
 
-    For example, if winSize=Size(5,5), then a  5*2+1 by 5*2+1 ==
-    11 by 11 search window is used.
+    For example, if winSize=Size(11, 11), then a  11*2+1 by 11*2+1 ==
+    23 by 23 search window is used.
 
     minusOne = (-1, -1):
     Half of the size of the dead region in the middle of the search zone
     over which the summation in the formula below is not done.
 
-    It is used sometimes to avoid possible singularities of the
+    It is sometimes used to avoid possible singularities of the
     autocorrelation matrix.
 
     The value of (-1,-1) indicates that there is no such a size of a
@@ -146,13 +128,12 @@ def show_images(images):
 
 
 # TODO: The color and gray images could even be kept in the ctx object.
-def find_points_pixel(ctx, image, gray):
+def find_points_pixel(ctx, image, gray, flags):
     """
     Utility function.
 
     Get the object and image points at the pixel level.
     """
-    flags = None
     found, corners_pixel = cv2.findChessboardCorners(gray,
                                                      (ctx.COLUMNS,
                                                       ctx.ROWS),
