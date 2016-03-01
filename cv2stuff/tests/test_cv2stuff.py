@@ -19,6 +19,7 @@ def ctx():
     # py.test has to be run in cv2stuff for this to work.
     setup.test_image_path = "cv2stuff/tests/images/"
     setup.chessboard_image = 'undistort.jpg'
+    setup.calibration_images = "my*.jpg"
     return(setup)
 
 
@@ -114,7 +115,7 @@ def test_path_globbed_files(ctx):
 
     # echo names of globbed files
     result = runner.invoke(cv2stuff.click_paths, [ctx.test_image_path +
-                                                  'my*.jpg'])
+                                                  ctx.calibration_images])
     assert '' in result.output
     assert result.exit_code == 2
 
