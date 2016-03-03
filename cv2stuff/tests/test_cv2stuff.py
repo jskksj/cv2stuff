@@ -16,7 +16,7 @@ def ctx():
     Return a Configuration object.
     """
     setup = cv2stuff.Configuration()
-    # py.test has to be run in cv2stuff for this to work.
+    # py.test has to be run at the top of cv2stuff for this to work.
     setup.test_image_path = "cv2stuff/tests/images/"
     setup.chessboard_image = 'undistort.jpg'
     setup.calibration_images = "my*.jpg"

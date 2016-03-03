@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
    :glob:
 
+   design
    cv2stuff
    readme
    notes/*
