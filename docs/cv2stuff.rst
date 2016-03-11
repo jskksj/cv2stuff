@@ -28,6 +28,14 @@ cv2stuff.configuration module
     :undoc-members:
     :show-inheritance:
 
+cv2stuff.cv2stuff module
+------------------------
+
+.. automodule:: cv2stuff.cv2stuff
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 cv2stuff.kint module
 --------------------
 
@@ -40,14 +48,6 @@ cv2stuff.pickleit module
 ------------------------
 
 .. automodule:: cv2stuff.pickleit
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-cv2stuff.stuff module
----------------------
-
-.. automodule:: cv2stuff.stuff
     :members:
     :undoc-members:
     :show-inheritance:

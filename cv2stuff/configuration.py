@@ -18,17 +18,20 @@ The first parameter for cv2.findChessboardCorners is a gray scale image
 converted from the original color image of a 'chessboard' calibration target.
 
 The 'gray_image' variable is initialized with None.
+
 >>> gray_image
 None
 
 The second parameter for cv2.findChessboardCorners is, 'pattern_size', which is
 tuple containing the width and height count of the calibration patterns inner
 points.
+
 >>> pattern_size
 (9, 6)
 
 The third parameter is 'corners'.  Which is the total number of inner corners
 in the calibration image, or 9 * 6 for the include sample images.
+
 >>> np.prod(pattern_size)
 54
 
@@ -37,11 +40,29 @@ This program does not use the optional 'corner_count' parameter.
 The final 'flags' argument activate any combination of three different image
 filters that are availble to help find the chessboard corners in the image.
 
-These filters do not appear to have python constants in cv2.
+These filters do not appear to have python constants in cv2.  Here are the
+descriptons of these flags right out of "Learning OpenCV", Bradski & Khaeler
 
-* **CV_CALIB_CB_ADAPTIVE_THRESH** Use adaptive thresholding to convert the image to
-  black and white, rather than a fixed threshold level (computed from the
+* **CV_CALIB_CB_ADAPTIVE_THRESH**
+  Use adaptive thresholding to convert the image
+  to black and white, rather than a fixed threshold level (computed from the
   average image brightness).
+
+* **CV_CALIB_CB_NORMALIZE_IMAGE**
+  If set, this flag causes the image to be normalized via cvEqualizeHist()
+  before the thresholding is applied.
+
+* **CV_CALIB_CB_FILTER_QUADS**
+  Once the image is thresholded, the algorithm attempts to locate the
+  quadrangles resulting from the perspective view of the black squares on the
+  chessboard. This is an approximation because the lines of each edge of a
+  quadrangle are assumed to be straight, which isn’t quite true when there is
+  radial distortion in the image. If this flag is set, then a variety of
+  additional constraints are applied to those quadrangles in order to reject
+  false quadrangles.
+
+>>> flags # CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE
+3
 
 Termination criteria for cv2.findChessboardCorners
 
@@ -58,8 +79,14 @@ import numpy as np
 
 
 gray_image = None
+
 pattern_size = (9, 6)
 
+CV_CALIB_CB_ADAPTIVE_THRESH = 1
+CV_CALIB_CB_NORMALIZE_IMAGE = 2
+CV_CALIB_CB_FILTER_QUADS = 4
+
+flags = CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE
 
 MAXIMUM_ITERATIONS = 30
 PIXEL_RESOLUTION = 0.001
