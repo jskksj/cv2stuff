@@ -1,5 +1,4 @@
-"""
-**Configuration Data Module**
+"""**Configuration Data Module**
 
 This module holds configuration data for the OpenCV camera calibration routines.
 
@@ -17,10 +16,10 @@ that have calibration targets of the recommended shape, (9, 6), to be exact.
 The first parameter for cv2.findChessboardCorners is a gray scale image
 converted from the original color image of a 'chessboard' calibration target.
 
-The 'gray_image' variable is initialized with None.
+The 'gray_image' variable is initialized to be an empty list.
 
 >>> gray_image
-None
+[]
 
 The second parameter for cv2.findChessboardCorners is, 'pattern_size', which is
 tuple containing the width and height count of the calibration patterns inner
@@ -64,21 +63,70 @@ descriptons of these flags right out of "Learning OpenCV", Bradski & Khaeler
 >>> flags # CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE
 3
 
-Termination criteria for cv2.findChessboardCorners
+cv2.findChessboardCorners returns corner locations at a rough pixel level. The
+next step is to use cv2.FindCornerSubPix() to get the final corner position.
+
+The first parameter is the same gray scale image used to find the pixel level
+corners. The second paramter is the actual corners returned from
+cv2.findChessboardCorners.  This array will have it's contents replaced by the
+refinded corners found by cv2.FindCornerSubPix()
+
+>>> corners
+[]
+
+winSize: half of the side length of the search window.
+
+For example, if winSize=Size(11, 11), then a  11*2+1 by 11*2+1 == 23 by 23
+search window is used.
+
+>>> winSize
+(11, 11)
+
+zeroZone: half of the size of the dead region in the middle of the search zone
+over which the summation in the formula below is not done.
+
+>>> zeroZone
+(-1, -1)
+
+It is sometimes used to avoid possible singularities of the autocorrelation
+matrix.
+
+#TODO reword this and where did it come from.
+
+The value of (-1,-1) indicates that there is no such a size of a window and
+zeroOne indicate there is.
+
+This function is iterative and needs termination criteria to tell it when to
+stop and return. The default behavior is to stop on either 30 iterations or
+1/1000 pixel resolution or both.
+
+Use these two flags to set the termination criteria.
+
+* **TERM_CRITERIA_MAX_ITER**: iteration stop
+* **TERM_CRITERIA_EPS**:      subpixel resolution stop
 
 >>> MAXIMUM_ITERATIONS
 30
 >>> PIXEL_RESOLUTION
 0.001
+>>> cv2.TERM_CRITERIA_MAX_ITER
+1
+>>> cv2.TERM_CRITERIA_EPS,
+(2,)
 >>> criteria
 (3, 30, 0.001)
+
+cv2.calibrateCamera needs an array of arrays for the 'objectPoints'.  Each image
+will need an array of np.prod(pattern_size) for the points nested within another
+array that has an element for every image with a chessboard found within it.
+
 """
 
 import cv2
 import numpy as np
 
 
-gray_image = None
+gray_image = []
 
 pattern_size = (9, 6)
 
@@ -91,12 +139,17 @@ flags = CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE
 MAXIMUM_ITERATIONS = 30
 PIXEL_RESOLUTION = 0.001
 
+corners = []
+winSize = (11, 11)
+zeroZone = (-1, -1)
+
 criteria = (cv2.TERM_CRITERIA_MAX_ITER + cv2.TERM_CRITERIA_EPS,
             MAXIMUM_ITERATIONS,
             PIXEL_RESOLUTION)
 
-columns = 7
-rows = 5
+
+# Size the array to support the number of inner points in the chessboard.
+objectPoints = np.zeros((np.prod(pattern_size), 3), np.float32)
 
 
 if __name__ == '__main__':

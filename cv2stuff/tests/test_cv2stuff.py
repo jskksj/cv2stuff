@@ -1,4 +1,5 @@
 """Basic testing of cv2stuff"""
+# from pathlib import Path
 
 import pytest
 import cv2
@@ -17,8 +18,9 @@ def ctx():
     """
     setup = cv2stuff.Configuration()
     # py.test has to be run at the top of cv2stuff for this to work.
-    setup.test_image_path = "cv2stuff/tests/images/"
-    setup.chessboard_image = 'undistort.jpg'
+    # setup.test_image_path = Path("cv2stuff/data/images/")
+    setup.test_image_path = "cv2stuff/../data/images/"
+    setup.chessboard_image = "undistort.jpg"
     setup.calibration_images = "my*.jpg"
     return(setup)
 
