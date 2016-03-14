@@ -68,8 +68,10 @@ next step is to use cv2.FindCornerSubPix() to get the final corner position.
 
 The first parameter is the same gray scale image used to find the pixel level
 corners. The second paramter is the actual corners returned from
-cv2.findChessboardCorners.  This array will have it's contents replaced by the
-refinded corners found by cv2.FindCornerSubPix()
+cv2.findChessboardCorners.
+
+This array will have it's contents replaced by the refinded corners found by
+cv2.FindCornerSubPix()
 
 >>> corners
 []
@@ -91,10 +93,7 @@ over which the summation in the formula below is not done.
 It is sometimes used to avoid possible singularities of the autocorrelation
 matrix.
 
-#TODO reword this and where did it come from.
-
-The value of (-1,-1) indicates that there is no such a size of a window and
-zeroOne indicate there is.
+The value of (-1,-1) indicates that there is no such a size of a window.
 
 This function is iterative and needs termination criteria to tell it when to
 stop and return. The default behavior is to stop on either 30 iterations or
@@ -116,10 +115,27 @@ Use these two flags to set the termination criteria.
 >>> criteria
 (3, 30, 0.001)
 
-cv2.calibrateCamera needs an array of arrays for the 'objectPoints'.  Each image
-will need an array of np.prod(pattern_size) for the points nested within another
-array that has an element for every image with a chessboard found within it.
+**"Learning OpenCV", Bradski & Khaeler**:
+The objectPoints array is a vector of vectors of calibration pattern points in
+ojbect 3d space.
 
+If the calibration pattern is in full view of each image then the all of the
+object point vectors will be the same.
+
+Presumbably the default calibration script appends a new array of object points
+for each image just in case the images should differ in some way.
+
+Consideration for noise and numerical stability is typically what requires the
+collection of more images of a larger chessboard. In practice, for
+high-quality results, you’ll need at least ten images of a 7-by-8 or larger
+chessboard (and that’s only if you move the chessboard enough between images
+to obtain a “rich” set of views).
+
+>>> object_points
+[]
+
+>>> image_points
+[]
 """
 
 import cv2
@@ -148,8 +164,11 @@ criteria = (cv2.TERM_CRITERIA_MAX_ITER + cv2.TERM_CRITERIA_EPS,
             PIXEL_RESOLUTION)
 
 
-# Size the array to support the number of inner points in the chessboard.
-objectPoints = np.zeros((np.prod(pattern_size), 3), np.float32)
+# Size the array to support the number of inner points in one chessboard.
+object_points = []
+image_points = []
+
+pattern_points = np.zeros((np.prod(pattern_size), 3), np.float32)
 
 
 if __name__ == '__main__':

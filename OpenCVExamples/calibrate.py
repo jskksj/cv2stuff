@@ -48,6 +48,7 @@ if __name__ == '__main__':
     pattern_size = (9, 6)
     pattern_points = np.zeros((np.prod(pattern_size), 3), np.float32)
     pattern_points[:, :2] = np.indices(pattern_size).T.reshape(-1, 2)
+    # This will multiply the index by square_size, what good is that?
     pattern_points *= square_size
 
     obj_points = []
