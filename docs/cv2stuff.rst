@@ -20,14 +20,6 @@ cv2stuff.api module
     :undoc-members:
     :show-inheritance:
 
-cv2stuff.configuration module
------------------------------
-
-.. automodule:: cv2stuff.configuration
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 cv2stuff.cv2stuff module
 ------------------------
 
