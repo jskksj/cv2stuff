@@ -6,10 +6,19 @@ Subpackages
 
 .. toctree::
 
+    cv2stuff.notebooks
     cv2stuff.tests
 
 Submodules
 ----------
+
+cv2stuff.api module
+-------------------
+
+.. automodule:: cv2stuff.api
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 cv2stuff.configuration module
 -----------------------------
