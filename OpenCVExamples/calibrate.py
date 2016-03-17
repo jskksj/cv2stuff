@@ -10,7 +10,7 @@ usage:
 default values:
     --debug:    ./output/
     --square_size: 1.0
-    <image mask> defaults to ../data/left*.jpg
+    <image mask> defaults to images/left*.jpg
 '''
 
 # Python 2/3 compatibility
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     args.setdefault('--debug', './output/')
     args.setdefault('--square_size', 1.0)
     if not img_mask:
-        img_mask = '../data/left*.jpg'  # default
+        img_mask = 'images/left*.jpg'  # default
     else:
         img_mask = img_mask[0]
 
@@ -48,7 +48,6 @@ if __name__ == '__main__':
     pattern_size = (9, 6)
     pattern_points = np.zeros((np.prod(pattern_size), 3), np.float32)
     pattern_points[:, :2] = np.indices(pattern_size).T.reshape(-1, 2)
-    # This will multiply the index by square_size, what good is that?
     pattern_points *= square_size
 
     obj_points = []
@@ -56,39 +55,11 @@ if __name__ == '__main__':
     h, w = 0, 0
     img_names_undistort = []
     for fn in img_names:
-        findCorners(fn)
-
-    # calculate camera distortion
-    rms, camera_matrix, dist_coefs, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, (w, h), None, None)
-
-    print("\nRMS:", rms)
-    print("camera matrix:\n", camera_matrix)
-    print("distortion coefficients: ", dist_coefs.ravel())
-
-    # undistort the image with the calibration
-    print('')
-    for img_found in img_names_undistort:
-        img = cv2.imread(img_found)
-
-        h,  w = img.shape[:2]
-        newcameramtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, dist_coefs, (w, h), 1, (w, h))
-
-        dst = cv2.undistort(img, camera_matrix, dist_coefs, None, newcameramtx)
-
-        # crop and save the image
-        x, y, w, h = roi
-
-        dst = dst[y:y+h, x:x+w]
-        outfile = img_found + '_undistorted.png'
-        print('Undistorted image written to: %s' % outfile)
-        cv2.imwrite(outfile, dst)
-
-    cv2.destroyAllWindows()
-
-
-    def findCorners(fn):
         print('processing %s... ' % fn, end='')
         img = cv2.imread(fn, 0)
+        if img is None:
+            print("Failed to load", fn)
+            continue
 
         h, w = img.shape[:2]
         found, corners = cv2.findChessboardCorners(img, pattern_size)
@@ -105,7 +76,44 @@ if __name__ == '__main__':
             if found:
                 img_names_undistort.append(outfile)
 
+        if not found:
+            print('chessboard not found')
+            continue
+
         img_points.append(corners.reshape(-1, 2))
         obj_points.append(pattern_points)
 
         print('ok')
+
+    # calculate camera distortion
+    # this is run once not in any loop.  It is specific to a particular
+    # camera.
+    rms, camera_matrix, dist_coefs, rvecs, tvecs = \
+        cv2.calibrateCamera(obj_points, img_points, (w, h), None, None)
+
+    print("\nRMS:", rms)
+    print("camera matrix:\n", camera_matrix)
+    print("distortion coefficients: ", dist_coefs.ravel())
+
+    # undistort the image with the calibration
+    print('')
+    for img_found in img_names_undistort:
+        img = cv2.imread(img_found)
+
+        h,  w = img.shape[:2]
+        newcameramtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix,
+                                                          dist_coefs,
+                                                          (w, h),
+                                                          1,
+                                                          (w, h))
+
+        dst = cv2.undistort(img, camera_matrix, dist_coefs, None, newcameramtx)
+
+        # crop and save the image
+        x, y, w, h = roi
+        dst = dst[y:y+h, x:x+w]
+        outfile = img_found + '_undistorted.png'
+        print('Undistorted image written to: %s' % outfile)
+        cv2.imwrite(outfile, dst)
+
+    cv2.destroyAllWindows()
