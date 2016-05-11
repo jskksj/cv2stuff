@@ -1,33 +1,32 @@
 tox setup
 =========
 
-I need to work on getting a good requirements setup.  I just spend a couple of hours wondering why I kept getting this error:
+
+:ref:`tox-error01`
+
+:ref:`tox-error02`
 
 .. code-block:: guess
 
-    ======================================================================
-    ERROR: test_calibrate (unittest.loader._FailedTest)
-    ----------------------------------------------------------------------
-    ImportError: Failed to import test module: test_calibrate
-    Traceback (most recent call last):
-    File "/home/jsk/.pyenv/versions/3.5.1/lib/python3.5/unittest/loader.py", line 153, in loadTestsFromName
-        module = __import__(module_name)
-    File "/home/jsk/GitHub/opencv_stuff/tests/test_calibrate.py", line 4, in <module>
-        from opencv_stuff.calibrate import calibrate
-    File "/home/jsk/GitHub/opencv_stuff/opencv_stuff/calibrate.py", line 2, in <module>
-        import click
-    ImportError: No module named 'click'
+        E   ImportError: No module named 'cv2'
 
+I get this error because tox creates a virtualenv for each version of python being tested and it cannot include the local cv2.so file.
 
-    ----------------------------------------------------------------------
-    Ran 2 tests in 0.002s
+I deleted all of the softlinks to cv2.cpython-34m.so in ~/.pyenv/ and .tox/
 
-    FAILED (errors=1)
-    ERROR: InvocationError: '/home/jsk/GitHub/opencv_stuff/.tox/py35/bin/python setup.py test'
+Then I made a softlike to /usr/local/lib/python3.4/site-packages/cv2.cpython-34m.so cv2.so in the main site-packages folder. Finally I added '/usr/local/lib/python3.4/site-packages/cv2.cpython-34m.so' to /etc/ld.so.conf and ran sudo ldconfig.
 
+ldconfig -p still does not show the cv2.so source object file.  Even if it did would having it available in the python3.4 packages really do any good?
 
-The darn thing would pass pytest, and python setup.py test but not tox.  Finally I get the deps right in tox.ini:
+I just ran python3.4 and it does not have site-packages in the path, just variations on '/usr/local/lib/python3.4/dist-packages'
+
+I linked cv2.so into '/usr/local/lib/python3.4/dist-packages' but now when I 'import cv2' I get:
 
 .. code-block:: guess
 
-    deps = -r{toxinidir}/requirements_dev.txt
+        ImportError: numpy.core.multiarray failed to import
+        Traceback (most recent call last):
+        File "<string>", line 1, in <module>
+        ImportError: numpy.core.multiarray failed to import
+
+I suppose if numpy were pip installed globaly that would not be a problem.

@@ -12,3 +12,10 @@ Untracked files:  (use "git add <file>..." to include in what will be
 committed)  _build/
 
 It turns out I had build/ in .gitignore rather than _build/ like it needed.
+
+Using sphinx-git...
+
+.. git_changelog::
+
+.. git_changelog::
+    :rev-list: v3..v4
