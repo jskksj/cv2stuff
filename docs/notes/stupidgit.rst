@@ -17,5 +17,6 @@ Using sphinx-git...
 
 .. git_changelog::
 
-.. git_changelog::
-    :rev-list: v3..v4
+.. git_commit_detail::
+        :branch:
+        :commit:
