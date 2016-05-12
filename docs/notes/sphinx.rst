@@ -3,7 +3,8 @@ Sphinx
 
 To fix this error I ran:
 
-..
+.. code-block:: guess
+
 
         pip install -e .
 
