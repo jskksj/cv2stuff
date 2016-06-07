@@ -3,9 +3,10 @@ PyEnv
 
 I think it might be best to create a virtualenv this way:
 
-..
+.. code-block:: console
 
-        **pyenv virtualenv pyversion venvname**
+        pyenv virtualenv pyversion venvname
+        pyenv virtualenv 2.7.6 cv2stuff
 
 When that is done the venvname will be in the envs folder of the chosen pyversion python interpreter.
 

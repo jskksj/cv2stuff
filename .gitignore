@@ -73,3 +73,6 @@ cv2stuff/tests/images/chessboard.png
 
 # Samples
 OpenCVExamples/*
+
+.buildozer
+test_shelf*
