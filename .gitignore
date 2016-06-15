@@ -76,3 +76,8 @@ OpenCVExamples/*
 
 .buildozer
 test_shelf*
+
+#tkinter
+cv2stuff/gui/idlelib
+cv2stuff/gui/configDialog.py
+
