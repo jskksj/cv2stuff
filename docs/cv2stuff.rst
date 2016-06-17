@@ -28,14 +28,6 @@ cv2stuff.cv2stuff module
     :undoc-members:
     :show-inheritance:
 
-cv2stuff.kivy-basic module
---------------------------
-
-.. automodule:: cv2stuff.kivy-basic
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------
