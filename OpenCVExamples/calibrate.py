@@ -91,9 +91,26 @@ if __name__ == '__main__':
     rms, camera_matrix, dist_coefs, rvecs, tvecs = \
         cv2.calibrateCamera(obj_points, img_points, (w, h), None, None)
 
+    # Save all of the calibration files in a numpy compressed file.  Use
+    # CameraCalibration = np.load('CameraCalibration') and
+    # CameraCalibration['camera_matrix'] to get the camera matrix parameters.
+    np.savez_compressed('CameraCalibration',
+                        camera_matrix=camera_matrix,
+                        dist_coefs=dist_coefs,
+                        rvecs=rvecs,
+                        tvecs=tvecs)
+
     print("\nRMS:", rms)
+    print("type of rms: ", type(rms))
+    print("\n")
     print("camera matrix:\n", camera_matrix)
-    print("distortion coefficients: ", dist_coefs.ravel())
+    print("camera matrix shape: ", camera_matrix.shape)
+    print("\n")
+    # ravel flattens a matrix, it makes it one dimensional.
+    # print("distortion coefficients: ", dist_coefs.ravel())
+    print("distortion coefficients: ", dist_coefs)
+    print("dist_coefs shape: ", dist_coefs.shape)
+    print("\n")
 
     # undistort the image with the calibration
     print('')
