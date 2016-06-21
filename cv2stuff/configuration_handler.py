@@ -14,15 +14,17 @@ class ConfigurationHandler(object):
         self.folder = Path.home().joinpath(folder)
         self.token = self.folder.joinpath(token)
 
+        if self.folder == self.token:
+            raise ValueError('Token must be different than folder',
+                             self.folder, self.token)
+
     def check_configuration_folder(self):
         """Confirm that the application folder and token file exist
 
         The token serve to prove that an existing folder with the name of
         the application is in fact for that application and not a
-        coincidentialy name folder that should not be over written."""
-
-        assert(self.folder != self.token)
-
+        coincidentialy name folder that should not be over written.
+        """
         if self.folder.exists() & self.token.exists():
             return(True)
         else:
