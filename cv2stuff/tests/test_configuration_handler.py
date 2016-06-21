@@ -1,9 +1,10 @@
 import pytest
 
-import configuration_handler
+import cv2stuff.configuration_handler as config
+
 
 def test_initialization():
     with pytest.raises(ValueError) as need_names:
-        config = configuration_handler.ConfigurationHandler('', '')
+        cfg = config.ConfigurationHandler('', '')
 
-    print(need_names.value, config)
+    print(need_names.value, cfg)
